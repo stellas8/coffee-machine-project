@@ -1,5 +1,5 @@
 MENU = {
-    "esspreso": {
+    "espresso": {
         "ingredients": {
             "water": 50,
             "milk": 0,
@@ -32,7 +32,7 @@ resources = {
 }
 
 money = 0
-missing_ingredient = ""
+missing_ingredient = []
 quarter = 0.25
 dime = 0.1
 nickel = 0.05
@@ -56,16 +56,15 @@ def is_sufficient():
     needed_milk = MENU[order]["ingredients"]["milk"]
     needed_coffee = MENU[order]["ingredients"]["coffee"]
     if resources["water"] < needed_water:
-        missing_ingredient += "water"
+        missing_ingredient.append("water")
+    if resources["milk"] < needed_milk:
+        missing_ingredient.append("milk")
+    if resources["coffee"] < needed_coffee:
+        missing_ingredient.append("coffee")
+
+    if len(missing_ingredient) > 0:
         return False
-    elif resources["milk"] < needed_milk:
-        missing_ingredient += "milk"
-        return False
-    elif resources["coffee"] < needed_coffee:
-        missing_ingredient += "coffee"
-        return False
-    else:
-        return True
+    return True
 
 
 def process_coins():
@@ -113,4 +112,4 @@ while is_coffee_machine_on:
             else:
                 print(f"Not enough coins, returning full amount of money: {sum_of_coins}")
         else:
-            print(f"Sorry there is not enough {missing_ingredient}.")
+            print(f"Sorry there is not enough: {' '.join(missing_ingredient)}.")
